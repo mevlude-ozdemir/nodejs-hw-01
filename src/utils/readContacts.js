@@ -4,8 +4,13 @@ import fs from 'fs/promises';
 export const readContacts = async () => {
       try {
     const data = await fs.readFile(PATH_DB, 'utf8');
-    console.log('Dosya içeriği:', data);
+    return data || "[]"; // boşsa [] dön
+
   } catch (err) {
-    console.error('Dosya okuma hatası:', err);
+       // dosya yoksa boş array dön
+    if (err.code === "ENOENT") {
+      return "[]";
+    }
+    throw err;
   }
 };
